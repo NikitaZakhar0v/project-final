@@ -107,7 +107,7 @@ create table CONTACT
 (
     ID    bigint       not null,
     CODE  varchar(32)  not null,
-    VALUE varchar(256) not null,
+    "VALUE" varchar(256) not null,
     primary key (ID, CODE),
     constraint FK_CONTACT_PROFILE foreign key (ID) references PROFILE (ID) on delete cascade
 );
@@ -279,18 +279,34 @@ values ('todo', 'ToDo', 3, 'in_progress,canceled'),
        ('done', 'Done', 3, 'canceled'),
        ('canceled', 'Canceled', 3, null);
 
---changeset gkislin:users_add_on_delete_cascade
+--changeset zakharov:activity_drop_constraint_fk_activity_users
+
+ALTER TABLE ACTIVITY
+    DROP CONSTRAINT FK_ACTIVITY_USERS;
+
+--changeset gkislin:activity_add_on_delete_cascade_activity
 
 alter table ACTIVITY
-    drop constraint FK_ACTIVITY_USERS,
     add constraint FK_ACTIVITY_USERS foreign key (AUTHOR_ID) references USERS (ID) on delete cascade;
 
+--changeset zakharov:user_belong_drop_constraint_fk_user_belong
+
 alter table USER_BELONG
-    drop constraint FK_USER_BELONG,
+    drop constraint FK_USER_BELONG;
+
+--changeset zakharov:user_belong_add_on_delete_cascade_user_belong
+
+alter table USER_BELONG
     add constraint FK_USER_BELONG foreign key (USER_ID) references USERS (ID) on delete cascade;
 
+--changeset zakharov:attachment_drop_constraint_fk_attachment
+
 alter table ATTACHMENT
-    drop constraint FK_ATTACHMENT,
+    drop constraint FK_ATTACHMENT;
+
+--changeset zakharov:attachment_add_on_delete_cascade_fk_attachment
+
+alter table ATTACHMENT
     add constraint FK_ATTACHMENT foreign key (USER_ID) references USERS (ID) on delete cascade;
 
 --changeset valeriyemelyanov:change_user_type_reference
@@ -328,4 +344,3 @@ values ('todo', 'ToDo', 3, 'in_progress,canceled|'),
 --changeset ishlyakhtenkov:change_UK_USER_BELONG
 
 drop index UK_USER_BELONG;
-create unique index UK_USER_BELONG on USER_BELONG (OBJECT_ID, OBJECT_TYPE, USER_ID, USER_TYPE_CODE) where ENDPOINT is null;

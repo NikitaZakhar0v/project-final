@@ -8,23 +8,33 @@ from PROFILE;
 
 delete
 from ACTIVITY;
+create
+sequence if not exists ACTIVITY_ID_SEQ start with 1;
 alter
 sequence ACTIVITY_ID_SEQ restart with 1;
 delete
 from TASK;
+create
+sequence if not exists TASK_ID_SEQ start with 1;
 alter
 sequence TASK_ID_SEQ restart with 1;
 delete
 from SPRINT;
+create
+sequence if not exists SPRINT_ID_SEQ start with 1;
 alter
 sequence SPRINT_ID_SEQ restart with 1;
 delete
 from PROJECT;
+create
+sequence if not exists PROJECT_ID_SEQ start with 1;
 alter
 sequence PROJECT_ID_SEQ restart with 1;
 
 delete
 from USERS;
+create
+sequence if not exists USERS_ID_SEQ start with 1;
 alter
 sequence USERS_ID_SEQ restart with 1;
 
@@ -38,6 +48,8 @@ values ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'us
 -- 1 ADMIN
 -- 2 MANAGER
 
+select id from users;
+
 insert into USER_ROLE (USER_ID, ROLE)
 values (1, 0),
        (2, 0),
@@ -48,7 +60,7 @@ insert into PROFILE (ID, LAST_FAILED_LOGIN, LAST_LOGIN, MAIL_NOTIFICATIONS)
 values (1, null, null, 49),
        (2, null, null, 14);
 
-insert into CONTACT (ID, CODE, VALUE)
+insert into CONTACT (ID, CODE, "VALUE")
 values (1, 'skype', 'userSkype'),
        (1, 'mobile', '+01234567890'),
        (1, 'website', 'user.com'),
